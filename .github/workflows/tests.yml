@@ -1,0 +1,20 @@
+name: bounded-reference-tests
+on:
+  push:
+  pull_request:
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Offline-friendly source import
+        run: echo "PYTHONPATH=src" >> "$GITHUB_ENV"
+      - name: Test bounded reference behavior
+        run: python -m unittest discover -s tests -v
+      - name: Smoke test
+        run: python scripts/demo.py
